@@ -71,12 +71,36 @@ public class FoodServer {
                             out.writeObject(new Message(MessageType.ORDER_SUM, String.valueOf(sum)));
                         }
 
-                        case ADDRESS -> {
-                            System.out.println("Delivery Address: " + msg.getData());
+                        case SUBMIT_ORDER -> {
+                            String[] parts = msg.getData().split("\\|");
+                            if (parts.length == 2) {
+                                String orderedDishes = parts[0].trim();
+                                String deliveryAddress = parts[1].trim();
+
+                                double sum = 0;
+                                String[] dishes = orderedDishes.split("\\s*,\\s*");
+                                
+                                for (String dishName : dishes) {
+                                    for (Dish d : menu) {
+                                        if (d.getName().equalsIgnoreCase(dishName.trim())) {
+                                            sum += d.getPrice();
+                                            break; 
+                                        }
+                                    }
+                                }
+
+                                System.out.println("--- Full Delivery Report ---");
+                                System.out.println("Ordered Dishes: " + orderedDishes);
+                                System.out.println("Order Total: " + String.format("%.2f", sum) + " RUB");
+                                System.out.println("Delivery Address: " + deliveryAddress);
+                                System.out.println("----------------------------");
+
+                            } else {
+                                System.out.println("Error: Full order report data is corrupted.");
+                            }
                         }
                     }
                 }
-
             } catch (Exception e) {
                 System.out.println("Client disconnected.");
             }

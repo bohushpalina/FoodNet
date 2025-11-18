@@ -17,28 +17,31 @@ public class FoodClient {
 
         Scanner sc = new Scanner(System.in);
 
-        // 1. Get menu
+     // 1. Get menu (Остается без изменений)
         out.writeObject(new Message(MessageType.GET_MENU, ""));
         Message menuMsg = (Message) in.readObject();
         System.out.println("Menu:");
         System.out.println(menuMsg.getData());
 
-        // 2. Enter order
+        // 2. Ввод заказа и запрос суммы (Используем старую логику для получения суммы)
         System.out.println("Enter your order (comma-separated):");
-        String order = sc.nextLine();
-        out.writeObject(new Message(MessageType.ORDER, order));
+        String orderString = sc.nextLine();
+        
+        // Отправляем строку заказа, чтобы сервер вычислил сумму
+        out.writeObject(new Message(MessageType.ORDER, orderString));
 
         Message sumMsg = (Message) in.readObject();
         System.out.println("Order total: " + sumMsg.getData());
 
-        // 3. Address
+        // 3. Ввод адреса
         System.out.println("Enter delivery address:");
         String addr = sc.nextLine();
-        out.writeObject(new Message(MessageType.ADDRESS, addr));
-
+        
+        String fullReport = orderString + "|" + addr;
+        out.writeObject(new Message(MessageType.SUBMIT_ORDER, fullReport));
+        
         System.out.println("Order placed.");
         
-        // Closing the resources (optional, as main thread ends, but good practice)
         sc.close();
         socket.close();
     }

@@ -6,5 +6,6 @@ public enum MessageType {
     ORDER,
     ADDRESS,
     ORDER_SUM,
-    ERROR
+    ERROR,
+    SUBMIT_ORDER
 }
