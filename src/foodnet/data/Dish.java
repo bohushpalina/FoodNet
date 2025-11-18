@@ -16,7 +16,6 @@ public class Dish implements Serializable {
 
     @Override
     public String toString() {
-        // Keeping "руб." as it is a unit of currency, not conversational text
         return name + " - " + price + " RUB."; 
     }
 }
