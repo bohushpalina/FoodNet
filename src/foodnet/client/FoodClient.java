@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class FoodClient {
 
     public static void main(String[] args) throws Exception {
-        Socket socket = new Socket("localhost", 5555);
+        Socket socket = new Socket("10.195.59.160", 5555);
 
         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
         ObjectInputStream in = new ObjectInputStream(socket.getInputStream());

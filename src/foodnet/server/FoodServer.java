@@ -20,7 +20,7 @@ public class FoodServer {
 	);
 
     public static void main(String[] args) throws Exception {
-        ServerSocket server = new ServerSocket(5555);
+    	ServerSocket server = new ServerSocket(5555, 50, InetAddress.getByName("0.0.0.0"));
         System.out.println("Food server started...");
 
         while (true) {
