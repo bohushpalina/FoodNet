@@ -5,7 +5,6 @@ import foodnet.protocol.*;
 import java.util.Arrays;
 import java.util.List;
 
-
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -13,10 +12,10 @@ import java.util.*;
 public class FoodServer {
 
 	private static final List<Dish> menu = Arrays.asList(
-	        new Dish("Пицца", 12.5),
-	        new Dish("Бургер", 9.0),
-	        new Dish("Салат", 5.0),
-	        new Dish("Суши", 14.0)
+	        new Dish("Pizza", 12.5), // Changed "Пицца" to "Pizza"
+	        new Dish("Burger", 9.0), // Changed "Бургер" to "Burger"
+	        new Dish("Salad", 5.0),  // Changed "Салат" to "Salad"
+	        new Dish("Sushi", 14.0)  // Changed "Суши" to "Sushi"
 	);
 
     public static void main(String[] args) throws Exception {
@@ -55,13 +54,16 @@ public class FoodServer {
                         }
 
                         case ORDER -> {
-                            String[] dishes = msg.getData().split(",");
+                            // Using more robust split for comma-separated list
+                            String[] dishes = msg.getData().split("\\s*,\\s*");
                             double sum = 0;
 
                             for (String dishName : dishes) {
                                 for (Dish d : menu) {
                                     if (d.getName().equalsIgnoreCase(dishName.trim())) {
                                         sum += d.getPrice();
+                                        // Added break to prevent re-counting and optimize search
+                                        break; 
                                     }
                                 }
                             }
@@ -70,13 +72,13 @@ public class FoodServer {
                         }
 
                         case ADDRESS -> {
-                            System.out.println("Адрес доставки: " + msg.getData());
+                            System.out.println("Delivery Address: " + msg.getData());
                         }
                     }
                 }
 
             } catch (Exception e) {
-                System.out.println("Клиент отключился.");
+                System.out.println("Client disconnected.");
             }
         }
     }
